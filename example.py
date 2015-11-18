@@ -1,22 +1,17 @@
+from requests_oauthlib import OAuth1Session
 import json
-from aweber_rest import api
+import config
 
-account_id = ''
-list_id = ''
+aweber = OAuth1Session(client_key = config.CLIENT_KEY
+                    ,client_secret = config.CLIENT_SECRET
+                    ,resource_owner_key = config.RESOURCE_OWNER_KEY
+                    ,resource_owner_secret = config.RESOURCE_OWNER_SECRET)
 
-url = 'https://api.aweber.com/1.0/accounts/{0}/lists/{1}/subscribers'.format(account_id, list_id)
-args = {}
+url = 'https://api.aweber.com/1.0/accounts'
 
-response = api.call(url, args)
+response = aweber.get(url)
 
-subscribers = response.json()['entries']
-
-while 'next_collection_link' in response.json().keys():
-    url = response.json()['next_collection_link']
-
-    response = api.call(url, args)
-
-    subscribers += response.json()['entries']
-
-for s in subscribers:
-    print(json.dumps(s, sort_keys=True, indent=4))
+if response.status_code == 200:
+    print(response.json())
+else:
+    print('Error:', response.status_code)

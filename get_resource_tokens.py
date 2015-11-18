@@ -1,7 +1,6 @@
 from requests_oauthlib import OAuth1Session
-from urllib.parse import urlencode
 import sys
-from aweber_rest import config
+import config
 
 def get_resource_auth(client_key, client_secret):
     callback_uri = 'http://localhost/'
@@ -44,15 +43,7 @@ def get_resource_tokens():
     (resource_owner_key, resource_owner_secret) = get_resource_auth(config.CLIENT_KEY, config.CLIENT_SECRET)
     print("RESOURCE_OWNER_KEY = '" + resource_owner_key + "'")
     print("RESOURCE_OWNER_SECRET = '" + resource_owner_secret + "'")
-    sys.exit()
 
 
-def call(url, args):
-    if args:
-        url += '?{0}'.format(urlencode(args))
-
-    aweber_access = OAuth1Session(config.CLIENT_KEY
-                        ,client_secret = config.CLIENT_SECRET
-                        ,resource_owner_key = config.RESOURCE_OWNER_KEY
-                        ,resource_owner_secret = config.RESOURCE_OWNER_SECRET)
-    return aweber_access.get(url)
+if __name__ == '__main__':
+    get_resource_tokens()
