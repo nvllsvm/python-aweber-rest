@@ -1,13 +1,13 @@
 from requests_oauthlib import OAuth1Session
-import sys
 import config
+
 
 def get_resource_auth(client_key, client_secret):
     callback_uri = 'http://localhost/'
 
-    oauth = OAuth1Session(client_key
-                         ,client_secret = client_secret
-                         ,callback_uri = callback_uri)
+    oauth = OAuth1Session(client_key,
+                          client_secret=client_secret,
+                          callback_uri=callback_uri)
 
     request_token_uri = 'https://auth.aweber.com/1.0/oauth/request_token'
     fetch_response = oauth.fetch_request_token(request_token_uri)
@@ -26,11 +26,11 @@ def get_resource_auth(client_key, client_secret):
 
     access_token_url = 'https://auth.aweber.com/1.0/oauth/access_token'
 
-    aweber_access = OAuth1Session(client_key
-                         ,client_secret = client_secret
-                         ,resource_owner_key = resource_owner_key
-                         ,resource_owner_secret = resource_owner_secret
-                         ,verifier = verifier)
+    aweber_access = OAuth1Session(client_key,
+                                  client_secret=client_secret,
+                                  resource_owner_key=resource_owner_key,
+                                  resource_owner_secret=resource_owner_secret,
+                                  verifier=verifier)
     aweber_access_tokens = aweber_access.fetch_access_token(access_token_url)
 
     resource_owner_key = aweber_access_tokens['oauth_token']
@@ -40,9 +40,10 @@ def get_resource_auth(client_key, client_secret):
 
 
 def get_resource_tokens():
-    (resource_owner_key, resource_owner_secret) = get_resource_auth(config.CLIENT_KEY, config.CLIENT_SECRET)
-    print("RESOURCE_OWNER_KEY = '" + resource_owner_key + "'")
-    print("RESOURCE_OWNER_SECRET = '" + resource_owner_secret + "'")
+    key, secret = get_resource_auth(config.CLIENT_KEY, config.CLIENT_SECRET)
+
+    print("RESOURCE_OWNER_KEY = '{0}'".format(key))
+    print("RESOURCE_OWNER_SECRET = '{0}'".format(secret))
 
 
 if __name__ == '__main__':
