@@ -1,6 +1,11 @@
 from requests_oauthlib import OAuth1Session
 import config
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 
 def get_resource_auth(client_key, client_secret):
     callback_uri = 'http://localhost/'
@@ -18,7 +23,7 @@ def get_resource_auth(client_key, client_secret):
     base_auth_url = 'https://auth.aweber.com/1.0/oauth/authorize?'
     auth_url = oauth.authorization_url(base_auth_url)
 
-    print('Authorize here:', auth_url)
+    print('Authorize here: {}'.format(auth_url))
     redirect_response = input('Enter the redirect URL: ')
 
     oauth_response = oauth.parse_authorization_response(redirect_response)
